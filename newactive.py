@@ -1,4 +1,5 @@
 import configparser
+import datetime
 import platform
 
 from SMS_send import SMSSend
@@ -22,16 +23,21 @@ if __name__ == '__main__':
         conf.read("SMSblessing.conf")
     # 数据库实例
     stone = stoneobject()
+    # 初始化 定时器
+    task = Task("08:00", logger)
+    times = conf.get(section="time", option="now")
+    if task.times != datetime.time(int(times.split(':')[0]), int(times.split(':')[1])):
+        task.times = input("请输入开始时间，例如08:00")
+    # task.times = "19:45"
+    logger.debug("主程序开始运行")
+    # 初始化 邮件发送、短信发送
+    send_mail = EmailSend(smtp_server=conf.get(section='email', option='smtp_server'),
+                          smtp_port=conf.get(section='email', option='smtp_port'),
+                          from_addr=conf.get(section='email', option='from_addr'),
+                          from_addr_str=conf.get(section='email', option='from_addr_str'),
+                          password=conf.get(section='email', option='password'), logger=logger, stone=stone)
+    send_sms = SMSSend(logger=logger, stone=stone, apikey=conf.get(section='SMSServer', option='apikey'))
     while True:
-        task = Task("19:00", logger)
-        # task.times = "19:45"
-        logger.debug("主程序开始运行")
-        send_mail = EmailSend(smtp_server=conf.get(section='email', option='smtp_server'),
-                              smtp_port=conf.get(section='email', option='smtp_port'),
-                              from_addr=conf.get(section='email', option='from_addr'),
-                              from_addr_str=conf.get(section='email', option='from_addr_str'),
-                              password=conf.get(section='email', option='password'), logger=logger, stone=stone)
-        send_sms = SMSSend(logger=logger, stone=stone, apikey=conf.get(section='SMSServer', option='apikey'))
         # 到达预定时间后，执行 BlessingPlay.play
         task.run(BlessingPlay.play, to_address=conf.get(section='options', option='to_addr'),
                  logger=logger, send_mail=send_mail, send_sms=send_sms, stone=stone, path='祝福短信人员.xls')
