@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>祝福邮件发送</title>
+</head>
+<body>
+<table width="580" border="1" align="center">
+    <caption>生日名单</caption>
+    <tbody>
+        <tr>
+            <th width="20%" scope="col">工号</th>
+            <th width="20%" scope="col">姓名</th>
+            <th width="20%" scope="col">发送日期</th>
+            <th width="20%" scope="col">生日日期</th>
+            <th width="20%" scope="col">电话号码</th>
+        </tr>
+        {% if brith_list|length > 0 %}
+            {% for one in brith_list %}
+                    <tr>
+                        <td width="20%" align="center">{{one.code}}</td>
+                        <td width="20%" align="center">{{one.name}}</td>
+                        <td width="20%" align="center">{{one.date}}</td>
+                        <td width="20%" align="center">{{one.birthDate}}</td>
+                        <td width="20%" align="center">{{one.Tel}}</td>
+                    </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan=5 align="center">无人员</td></tr>
+        {% endif %}
+    </tbody>
+</table>
+<table width="580" border="1" align="center">
+    <caption>司龄名单</caption>
+    <tbody>
+        <tr>
+        <th width="20%" scope="col">工号</th>
+        <th width="20%" scope="col">姓名</th>
+        <th width="20%" scope="col">发送日期</th>
+        <th width="20%" scope="col">司龄</th>
+        <th width="20%" scope="col">电话号码</th>
+        </tr>
+            {% if siling_list|length > 0 %}
+                {% for one in siling_list %}
+                    <tr>
+                        <td width="20%" align="center">{{one.code}}</td>
+                        <td width="20%" align="center">{{one.name}}</td>
+                        <td width="20%" align="center">{{one.date}}</td>
+                        <td width="20%" align="center">{{one.flagnum}}</td>
+                        <td width="20%" align="center">{{one.Tel}}</td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                    <tr><td colspan=5 align="center">无人员</td></tr>
+            {% endif %}
+    </tbody>
+</table>
+</body>
+</html>
