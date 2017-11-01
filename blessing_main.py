@@ -2,7 +2,6 @@ import datetime
 import time
 
 from chinese_calendar.utils import is_workday, is_holiday
-from loading import Loading
 
 
 class BlessingPlay(object):
@@ -31,7 +30,7 @@ class BlessingPlay(object):
         return days
 
     @classmethod
-    def play(cls, to_address, logger, send_mail, send_sms, stone, path):
+    def play(cls, to_address, logger, send_mail, send_sms, loading, ):
         """
         类方法，不需要实例化
         功能：
@@ -45,8 +44,7 @@ class BlessingPlay(object):
         :param logger:记录器实例
         :param send_mail:邮件发送实例
         :param send_sms:短信发送实例
-        :param stone:数据库连接
-        :param path:excel路径
+        :param loading:数据处理实例
         :return:
         """
         #  需要执行的动作
@@ -56,7 +54,6 @@ class BlessingPlay(object):
         logger.debug("查询日期天数:{day}".format(day=days))
         # 数据读取以及处理
         logger.debug("开始数据读取和处理")
-        loading = Loading(stone=stone, logger=logger, path=path)
         loading.run(days=days, today=today)
         logger.debug("数据读取和处理已结束")
         # logger.debug("执行邮件和短信发送")

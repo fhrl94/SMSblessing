@@ -112,7 +112,7 @@ class Loading(object):
             birth.code = one.code
             birth.birthDate = one.birthDate
             birth.Tel = one.Tel
-            birth.flagnum = today.month
+            birth.flagnum = one.birthDate.month
             birth.date = today + datetime.timedelta(days=i)
             birth.status = True
             # 可能会出现重复值
@@ -134,8 +134,8 @@ class Loading(object):
             division.code = one.code
             division.realityenterdate = one.enterdate
             division.Tel = one.Tel
-            division.flagnum = today.year - one.enterdate.year
             division.date = today + datetime.timedelta(days=i)
+            division.flagnum = division.date.year - one.enterdate.year
             division.status = True
             self.stone.add(division)
         self.stone.commit()

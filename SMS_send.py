@@ -1,16 +1,19 @@
 import datetime
-
+from pprint import pprint
 
 from sqlalchemy import and_
 
 from SMSblessing_stone import Birthlist, Divisionlist
 from blessingsend import Send
+# noinspection PyCompatibility
 from urllib.parse import quote
 from yunpian_python_sdk.model import constant as yc
 from yunpian_python_sdk.ypclient import YunpianClient
 
-class SMSSend(Send):
 
+# noinspection PyCompatibility
+class SMSSend(Send):
+    # noinspection PyCompatibility
     def __init__(self, logger, stone, apikey, *args, **kwargs):
         """
         初始化【参数】，并获取模板
@@ -18,6 +21,7 @@ class SMSSend(Send):
         :param stone:数据库连接实例
         :param apikey:云片apikey
         """
+        # noinspection PyCompatibility
         super().__init__(logger, stone, *args, **kwargs)
         self.logger = logger
         self.stone = stone
@@ -45,6 +49,7 @@ class SMSSend(Send):
                 for one in value:
                     tel.append(one.Tel)
                     data_str.append(sms_templates_dict[key][one.flagnum].format(Name=one.name, Day=today))
+        # pprint(data_str)
         param = {yc.MOBILE: ','.join(tel), yc.TEXT: (','.join(self._sms_send(data_str)))}
         # r = self.clnt.sms().multi_send(param)
         self.clnt.sms().multi_send(param)
@@ -53,13 +58,13 @@ class SMSSend(Send):
 
     def _get_template(self):
         """
-        获取模板
+        获取模板,因list第一个是从0开始，所有空置第一个元素
         所有的模板均是文本格式，参数有2个 Name 、 Day
         :return:
         """
         self.logger.debug("短信模板获取开始")
-        siling = []
-        brith = []
+        siling = ["", ]
+        brith = ["", ]
         file = open('司龄祝福', 'rb')
         for f in file.readlines():
             siling.append(f.decode('utf-8').replace('\r\n', '', -1))
@@ -98,4 +103,5 @@ class SMSSend(Send):
             data_str.append(quote(one))
         return data_str
         pass
+
     pass

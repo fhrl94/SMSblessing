@@ -1,3 +1,4 @@
+# noinspection PyCompatibility
 import configparser
 import datetime
 import platform
@@ -7,8 +8,8 @@ from SMSblessing_stone import stoneobject
 from TimerTask import Task
 from blessing_main import BlessingPlay
 from email_send import EmailSend
+from loading import Loading
 from mylogger import Logger
-
 
 if __name__ == '__main__':
     # 记录器 实例
@@ -37,9 +38,9 @@ if __name__ == '__main__':
                           from_addr_str=conf.get(section='email', option='from_addr_str'),
                           password=conf.get(section='email', option='password'), logger=logger, stone=stone)
     send_sms = SMSSend(logger=logger, stone=stone, apikey=conf.get(section='SMSServer', option='apikey'))
+    loading = Loading(stone=stone, logger=logger, path='祝福短信人员.xls')
     while True:
         # 到达预定时间后，执行 BlessingPlay.play
-        task.run(BlessingPlay.play, to_address=conf.get(section='options', option='to_addr'),
-                 logger=logger, send_mail=send_mail, send_sms=send_sms, stone=stone, path='祝福短信人员.xls')
+        task.run(BlessingPlay.play, to_address=conf.get(section='options', option='to_addr'), logger=logger,
+                 send_mail=send_mail, send_sms=send_sms, loading=loading, )
         logger.debug("当次执行完毕")
-

@@ -10,10 +10,9 @@ class Task(object):
         :param times: 预定日期
         :param logger:记录器 实例
         """
-        assert int(times.split(':')[0]) in range(23) and int(times.split(':')[1]) in range(60), "时间格式错误"
         # print(type(datetime.time(int(times.split(':')[0]), int(times.split(':')[1]))))
         # print(datetime.time(int(times.split(':')[0]), int(times.split(':')[1])))
-        self._times = datetime.time(int(times.split(':')[0]), int(times.split(':')[1]))
+        self._times = times
         self.logger = logger
         pass
 
@@ -34,7 +33,7 @@ class Task(object):
         :return:
         """
         # print(self._timer())
-        if 60*5 >= self._timer():
+        if 60*1 >= self._timer():
             self.logger.debug("已到预定时间，开始执行任务")
             return function_name(**kwargs)
         else:
@@ -59,9 +58,9 @@ class Task(object):
         :param times:
         :return:
         """
-        if isinstance(times, datetime.time):
-            print("赋值开始")
-            self._times = times
+        assert int(times.split(':')[0]) in range(23) and int(times.split(':')[1]) in range(60), "时间格式错误"
+        print("赋值开始")
+        self._times = datetime.time(int(times.split(':')[0]), int(times.split(':')[1]))
         pass
 
     '''
@@ -72,14 +71,14 @@ class Task(object):
     '''
     def _timer(self):
         """
-        确定距离【预定时间】剩余多少秒
+        确定距离【预定时间】剩余多少秒，定时时间减少 10s 防止误差
         :return:
         """
         nowtime = datetime.datetime.now().time()
         if self.times > nowtime:
             return (self.times.hour - nowtime.hour) * 60 * 60 + (self.times.minute - nowtime.minute) * 60 + (
-                self.times.second - nowtime.second)
+                self.times.second - nowtime.second) - 10
         else:
             return (self.times.hour - nowtime.hour) * 60 * 60 + (self.times.minute - nowtime.minute) * 60 + (
-                self.times.second - nowtime.second) + 60 * 60 * 24
+                self.times.second - nowtime.second) + 60 * 60 * 24 - 10
 
