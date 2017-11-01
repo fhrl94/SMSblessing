@@ -12,7 +12,7 @@ class Task(object):
         """
         # print(type(datetime.time(int(times.split(':')[0]), int(times.split(':')[1]))))
         # print(datetime.time(int(times.split(':')[0]), int(times.split(':')[1])))
-        self._times = times
+        self.times = times
         self.logger = logger
         pass
 
