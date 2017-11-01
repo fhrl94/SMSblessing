@@ -7,9 +7,8 @@ import xlrd
 import xlwt
 
 
-
-def readxlsx(file, ws, j):
-    workbook = xlrd.open_workbook(filename=file)
+def readxlsx(exclefile, ws, j):
+    workbook = xlrd.open_workbook(filename=exclefile)
     if j == 0:
         temp = 1
     else:
@@ -37,13 +36,12 @@ def readxlsx(file, ws, j):
     return j
 
 
-
-files = glob.glob(sys.path[0] + os.sep + 'temp' + os.sep + '*.xlsx' )
+files = glob.glob(sys.path[0] + os.sep + 'temp' + os.sep + '*.xlsx')
 print(files)
 sheet = xlwt.Workbook()
 ws = sheet.add_sheet('人员名单')
 j = 0
 for file in files:
     print(file)
-    j=readxlsx(file, ws, j)
+    j = readxlsx(file, ws, j)
 sheet.save('祝福短信人员.xls')

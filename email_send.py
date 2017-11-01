@@ -25,6 +25,7 @@ class EmailSend(Send):
         :param logger: 记录器实例
         :param stone: 数据库实例
         """
+        # noinspection PyCompatibility
         super().__init__(logger, stone, *args, **kwargs)
         self.smtp_server = smtp_server
         self.smtp_port = smtp_port
