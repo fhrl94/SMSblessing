@@ -50,9 +50,10 @@ class SMSSend(Send):
                     tel.append(one.Tel)
                     data_str.append(sms_templates_dict[key][one.flagnum].format(Name=one.name, Day=today))
         # pprint(data_str)
-        param = {yc.MOBILE: ','.join(tel), yc.TEXT: (','.join(self._sms_send(data_str)))}
-        # r = self.clnt.sms().multi_send(param)
-        self.clnt.sms().multi_send(param)
+        if len(tel) and len(data_str):
+            param = {yc.MOBILE: ','.join(tel), yc.TEXT: (','.join(self._sms_send(data_str)))}
+            # r = self.clnt.sms().multi_send(param)
+            self.clnt.sms().multi_send(param)
         self.logger.debug("短信发送完成")
         pass
 
