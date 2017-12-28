@@ -1,7 +1,7 @@
 import datetime
 import time
 
-from chinese_calendar.utils import is_workday, is_holiday
+from chinese_calendar import is_workday, is_holiday
 
 
 class BlessingPlay(object):

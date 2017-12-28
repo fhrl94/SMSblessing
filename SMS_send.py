@@ -12,6 +12,9 @@ from yunpian_python_sdk.ypclient import YunpianClient
 
 
 # noinspection PyCompatibility
+from constants import siling, brith
+
+
 class SMSSend(Send):
     # noinspection PyCompatibility
     def __init__(self, logger, stone, apikey, *args, **kwargs):
@@ -48,7 +51,14 @@ class SMSSend(Send):
             if len(value):
                 for one in value:
                     tel.append(one.Tel)
-                    data_str.append(sms_templates_dict[key][one.flagnum].format(Name=one.name, Day=today))
+                    if key == 'siling':
+                        data_str.append(sms_templates_dict[key][str(one.flagnum)].format(
+                            Name=one.name, Day=today.strftime(
+                                "%Y{year}%m{month}%d{day}").format(year='年', month='月', day='日')))
+                    elif key == 'brith':
+                        data_str.append(
+                            sms_templates_dict[key][one.date.strftime("%Y-%m")].format(Name=one.name,
+                            Day=today.strftime("%Y{year}%m{month}%d{day}").format(year='年', month='月', day='日')))
         # pprint(data_str)
         if len(tel) and len(data_str):
             param = {yc.MOBILE: ','.join(tel), yc.TEXT: (','.join(self._sms_send(data_str)))}
@@ -64,14 +74,6 @@ class SMSSend(Send):
         :return:
         """
         self.logger.debug("短信模板获取开始")
-        siling = ["", ]
-        brith = ["", ]
-        file = open('司龄祝福', 'rb')
-        for f in file.readlines():
-            siling.append(f.decode('utf-8').replace('\r\n', '', -1))
-        file = open('生日祝福', 'rb')
-        for f in file.readlines():
-            brith.append(f.decode('utf-8').replace('\r\n', '', -1))
         # return siling, brith
         self.siling_templates = siling
         self.brith_templates = brith

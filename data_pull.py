@@ -12,7 +12,7 @@ def readxlsx(exclefile, ws, j):
     if j == 0:
         temp = 1
     else:
-        temp = 2
+        temp = 3
     for sheet, one in enumerate(workbook.sheet_names()):
         print(one)
         if '离职' not in one and '司龄补回表' not in one:
